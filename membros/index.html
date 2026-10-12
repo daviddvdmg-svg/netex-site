@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Área de membros | NETEX-UFU</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+/* Layout: a página segue o site do NETEX (papel, carmim, ocre, Archivo, coluna de 1160px).
+   Faixa preta do protótipo no topo; sessões empilhadas por módulo; três desenhos para as leituras. */
+:root{
+  --preto:#000000;
+  --tinta:#33302c;
+  --tinta-fraca:#6b6660;
+  --ocre:#c3891b;
+  --ocre-escuro:#8a5f10;
+  --ocre-claro:#f6ecd8;
+  --carmim:#811316;
+  --carmim-claro:#f5e6e6;
+  --papel:#f3f3f1;
+  --branco:#ffffff;
+  --linha:#dbd9d3;
+  --linha-forte:#b8b5ad;
+  --ui:'Archivo',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --larg:1160px;
+  --gutter:clamp(16px,5vw,56px);
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;background:var(--papel)}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+body{background:var(--papel);color:var(--tinta);font-family:var(--ui);font-size:17px;line-height:1.6;
+  -webkit-font-smoothing:antialiased}
+a{color:inherit}
+h1,h2,h3,h4{margin:0;font-weight:500;line-height:1.14;color:var(--preto);letter-spacing:-.015em;text-wrap:balance}
+p{margin:0}
+img{max-width:100%;display:block}
+:focus-visible{outline:2px solid var(--ocre-escuro);outline-offset:3px}
+.wrap{max-width:var(--larg);margin:0 auto;padding-inline:var(--gutter)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* faixa do protótipo */
+.proto{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:var(--preto);color:var(--branco)}
+.proto .wrap{display:flex;flex-wrap:wrap;align-items:center;gap:8px 18px;padding-block:9px}
+.proto-rot{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--linha-forte)}
+.seg{display:flex;flex-wrap:wrap;gap:4px}
+.seg button{font-family:var(--ui);font-size:13.5px;color:var(--branco);background:transparent;cursor:pointer;
+  border:1px solid rgba(255,255,255,.35);padding:6px 12px;border-radius:2px}
+.seg button:hover{border-color:var(--branco)}
+.seg button[aria-pressed="true"]{background:var(--ocre);border-color:var(--ocre);color:var(--preto);font-weight:600}
+
+/* cabeçalho do site */
+.topo{background:var(--papel);border-bottom:1px solid var(--linha)}
+.topo .wrap{display:flex;align-items:center;gap:20px;min-height:84px}
+.marca{display:flex;align-items:center;gap:12px;text-decoration:none;flex-shrink:0}
+.simbolo{width:64px;height:54px;background:url("/img/netex-globo.webp") no-repeat center/contain}
+.logotipo{width:126px;height:56px;background:url("/img/netex-logotipo.webp") no-repeat left center/contain}
+.dir{display:flex;align-items:center;gap:16px;margin-left:auto}
+.membro{font-size:14px;color:var(--tinta-fraca)}
+.membro b{font-weight:600;color:var(--preto)}
+.divisor{width:1px;height:40px;background:var(--linha)}
+.selo-ufu{display:block;width:36px;height:54px;background:url("/img/ufu.webp") no-repeat center/contain}
+@media (max-width:560px){.logotipo{display:none}.membro .longo{display:none}}
+
+/* aviso de área restrita */
+.restrita{background:var(--carmim);color:var(--branco)}
+.restrita .wrap{display:flex;flex-wrap:wrap;align-items:center;gap:8px 24px;padding-block:11px;font-size:14.5px}
+.restrita p{flex:1 1 420px;min-width:0;color:#f6e3e3}
+.restrita strong{color:var(--branco);font-weight:600}
+.sair{font-size:14px;color:var(--branco);border:1px solid rgba(255,255,255,.55);padding:5px 14px;
+  border-radius:2px;background:transparent;font-family:var(--ui);text-decoration:none}
+.sair:hover{background:var(--branco);color:var(--carmim)}
+.trilha a{text-decoration:none;border-bottom:1px solid var(--linha-forte)}
+
+/* abertura */
+.trilha{font-size:13px;color:var(--tinta-fraca);padding-top:clamp(22px,4vw,36px)}
+.cabeca{padding-block:14px clamp(30px,5vw,48px)}
+.m-getex{display:block;width:clamp(150px,22vw,210px);height:clamp(42px,6vw,58px);
+  background:url("/img/getex-logo.webp") no-repeat left center/contain}
+.cabeca h1{font-size:clamp(30px,4.6vw,48px);font-weight:300;margin-top:18px}
+.cabeca .deck{font-size:clamp(17px,2vw,19.5px);max-width:60ch;margin-top:14px}
+.dados{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:18px 28px;
+  margin:28px 0 0;padding-top:20px;border-top:1px solid var(--linha)}
+.dados dt{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--tinta-fraca);margin-bottom:3px}
+.dados dd{margin:0;font-size:16px;line-height:1.4;font-variant-numeric:tabular-nums}
+.acoes{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;margin-top:26px}
+.botao{display:inline-flex;align-items:center;gap:9px;font-family:var(--ui);font-size:15px;text-decoration:none;
+  background:var(--preto);color:var(--branco);padding:11px 20px;border:1px solid var(--preto);border-radius:2px}
+.botao:hover{background:transparent;color:var(--preto)}
+.link{font-size:14.5px;color:var(--tinta);text-decoration:none;border-bottom:1px solid var(--ocre)}
+.link:hover{color:var(--carmim);border-color:var(--carmim)}
+
+.secao{padding-block:clamp(36px,5.5vw,64px);border-top:1px solid var(--linha)}
+.secao h2{font-size:clamp(22px,2.7vw,29px)}
+.secao-topo p{margin-top:8px;max-width:64ch;color:var(--tinta-fraca);font-size:16px}
+
+/* legenda */
+.legenda{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:28px 48px;margin-top:24px}
+.legenda h3{font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--tinta-fraca);margin-bottom:12px}
+.legenda ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.legenda li{display:grid;grid-template-columns:150px 1fr;gap:12px;align-items:baseline;font-size:15.5px;line-height:1.45}
+.legenda li > span:last-child{min-width:0}
+.legenda .obs{font-size:14px;color:var(--tinta-fraca);margin-top:14px;max-width:56ch}
+@media (max-width:480px){.legenda li{grid-template-columns:1fr;gap:4px}}
+
+/* rótulos de função */
+.papel{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;
+  padding:3px 8px 2px;border-radius:2px;white-space:nowrap;line-height:1.4}
+.p-ancora{background:var(--carmim);color:var(--branco)}
+.p-contraponto{color:var(--carmim);box-shadow:inset 0 0 0 1px var(--carmim)}
+.p-apoio{color:var(--ocre-escuro);box-shadow:inset 0 0 0 1px var(--ocre)}
+.p-enquadramento{color:var(--ocre-escuro);background:var(--ocre-claro)}
+.p-mapa{color:var(--tinta);box-shadow:inset 0 0 0 1px var(--linha-forte)}
+
+/* idioma */
+.idioma{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;letter-spacing:.05em;
+  color:var(--preto);white-space:nowrap}
+.flag{width:21px;height:14px;flex-shrink:0;border-radius:1px;box-shadow:0 0 0 1px rgba(0,0,0,.14);overflow:hidden;display:block}
+
+/* filtros e índice */
+.indice{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1px;background:var(--linha);
+  border:1px solid var(--linha);margin-top:22px}
+.indice a{display:block;background:var(--branco);padding:14px 16px 15px;text-decoration:none;min-width:0}
+.indice a:hover{background:var(--ocre-claro)}
+.indice .i-num{font-size:12px;color:var(--carmim);font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.indice .i-nome{display:block;font-size:16px;line-height:1.3;color:var(--preto);margin-top:3px}
+.indice .i-per{display:block;font-size:13px;color:var(--tinta-fraca);margin-top:4px;font-variant-numeric:tabular-nums}
+.indice a.atual{box-shadow:inset 3px 0 0 var(--ocre)}
+
+.filtros{display:flex;flex-wrap:wrap;gap:12px 22px;align-items:center;margin-top:26px}
+.busca{flex:1 1 280px;min-width:0;max-width:440px;display:flex;align-items:center;gap:8px;background:var(--branco);
+  border:1px solid var(--linha-forte);border-radius:2px;padding:0 12px}
+.busca input{flex:1;min-width:0;border:0;background:transparent;font-family:var(--ui);font-size:15.5px;
+  padding:10px 0;color:var(--preto);outline:none}
+.busca:focus-within{outline:2px solid var(--ocre-escuro);outline-offset:2px}
+.busca svg{flex-shrink:0;color:var(--tinta-fraca)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips button{display:inline-flex;align-items:center;gap:7px;font-family:var(--ui);font-size:13.5px;cursor:pointer;
+  background:var(--branco);color:var(--tinta);border:1px solid var(--linha-forte);padding:6px 11px;border-radius:2px}
+.chips button[aria-pressed="true"]{border-color:var(--preto);box-shadow:inset 0 0 0 1px var(--preto);color:var(--preto);font-weight:600}
+.resultado{font-size:14px;color:var(--tinta-fraca);margin-top:14px;min-height:1.6em}
+
+/* módulos e sessões */
+.modulo{padding-top:clamp(36px,5vw,58px);scroll-margin-top:60px}
+.m-topo{display:grid;gap:4px;padding-bottom:16px;border-bottom:2px solid var(--preto)}
+.m-num{font-size:12.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--carmim)}
+.m-topo h2{font-size:clamp(23px,3vw,32px);font-weight:500}
+.m-aut{font-size:15px;color:var(--tinta);font-style:italic}
+.m-per{font-size:13.5px;color:var(--tinta-fraca);font-variant-numeric:tabular-nums}
+.m-nota{font-size:15px;color:var(--tinta);background:var(--branco);border-left:3px solid var(--ocre);
+  padding:12px 16px;margin-top:16px;max-width:78ch}
+
+.sessao{padding-block:24px 26px;border-bottom:1px solid var(--linha);scroll-margin-top:60px}
+.s-meta{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;font-size:13.5px;font-variant-numeric:tabular-nums}
+.s-num{font-weight:600;color:var(--preto)}
+.s-meta time{color:var(--carmim)}
+.tag{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:2px;
+  color:var(--tinta-fraca);box-shadow:inset 0 0 0 1px var(--linha-forte)}
+.tag.prox{background:var(--ocre);color:var(--preto);box-shadow:none}
+.sessao h3{font-size:clamp(19px,2.3vw,23px);margin-top:6px;max-width:44ch}
+.s-intro{font-size:16px;max-width:72ch;margin-top:10px}
+.s-nota{font-size:14.5px;color:var(--tinta-fraca);max-width:76ch;margin-top:14px}
+.s-pasta{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;color:var(--tinta-fraca);text-decoration:none;margin-top:14px}
+.s-pasta:hover{color:var(--carmim)}
+.sessao.realizada h3,.sessao.realizada .s-num{color:var(--tinta-fraca)}
+.sem-leitura{font-size:15px;color:var(--tinta-fraca);font-style:italic;margin-top:10px}
+
+/* referência */
+.ref{font-size:16px;line-height:1.55;min-width:0;overflow-wrap:anywhere}
+.ref i{font-style:italic}
+.alt{font-size:14.5px;color:var(--tinta-fraca);margin-top:6px;overflow-wrap:anywhere}
+
+/* botões de arquivo */
+.baixar{display:inline-flex;align-items:center;gap:7px;font-family:var(--ui);font-size:14px;font-weight:500;
+  text-decoration:none;color:var(--preto);background:var(--branco);border:1px solid var(--preto);border-radius:2px;
+  padding:6px 12px;white-space:nowrap}
+.baixar:hover{background:var(--preto);color:var(--branco)}
+.abrir{font-size:12.5px;color:var(--tinta-fraca);text-decoration:none;border-bottom:1px solid var(--linha-forte);white-space:nowrap}
+.abrir:hover{color:var(--carmim);border-color:var(--carmim)}
+.tam{font-size:12.5px;color:var(--tinta-fraca);white-space:nowrap;font-variant-numeric:tabular-nums}
+.falta{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--tinta-fraca);
+  border:1px dashed var(--linha-forte);border-radius:2px;padding:6px 10px}
+
+/* A · lista */
+.lista{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:0}
+.leitura{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:14px 32px;padding:16px 0;border-top:1px solid var(--linha)}
+.leitura:first-child{border-top:0}
+.l-ref{display:grid;gap:8px;justify-items:start;min-width:0}
+.l-arq{display:grid;gap:8px;align-content:start}
+.arq{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:6px 12px;background:var(--branco);
+  border:1px solid var(--linha);padding:9px 10px 9px 12px;border-radius:2px}
+.arq .info{display:grid;gap:2px;min-width:0;justify-items:start}
+.arq .tam{white-space:normal}
+.arq .rot{font-weight:600;color:var(--preto)}
+@media (max-width:760px){.leitura{grid-template-columns:minmax(0,1fr)}}
+
+/* B · tabela */
+.rolagem{overflow-x:auto;border:1px solid var(--linha);background:var(--branco);margin-top:16px}
+.t-leit{border-collapse:collapse;width:100%;min-width:760px}
+.t-leit th,.t-leit td{text-align:left;vertical-align:top;padding:12px 14px;border-bottom:1px solid var(--linha)}
+.t-leit thead th{font-size:11.5px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--tinta-fraca);
+  background:var(--papel)}
+.t-leit tbody tr:last-child td{border-bottom:0}
+.t-leit td.c-papel{width:150px}
+.t-leit td.c-idi{width:96px}
+.t-leit td.c-arq{width:200px}
+.pilha{display:grid;gap:8px}
+.pilha > div{min-height:32px;display:flex;align-items:center;gap:10px}
+.t-leit .ref{font-size:15px}
+
+/* C · programa + painel */
+.c-grade{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:20px 40px;margin-top:14px;align-items:start}
+.c-prog{display:grid;gap:12px;min-width:0}
+.c-prog .ref{font-size:16px}
+.c-prog .pref{font-weight:600;color:var(--preto)}
+.c-prog sup{font-size:11px;color:var(--ocre-escuro);font-weight:600;margin-left:3px}
+.c-painel{background:var(--branco);border:1px solid var(--linha);border-top:3px solid var(--preto);padding:14px 14px 12px;
+  position:sticky;top:64px}
+.c-painel h4{font-size:12px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--tinta-fraca);margin-bottom:8px}
+.tile{display:grid;grid-template-columns:auto 1fr auto;gap:4px 12px;align-items:center;text-decoration:none;
+  padding:10px 4px;border-top:1px solid var(--linha);min-width:0}
+.tile:first-of-type{border-top:0}
+.tile .t-nome{font-size:14.5px;line-height:1.3;color:var(--preto);min-width:0}
+.tile .t-sub{display:block;font-size:12px;color:var(--tinta-fraca);font-variant-numeric:tabular-nums}
+.tile .t-ic{width:30px;height:30px;display:grid;place-items:center;border:1px solid var(--preto);border-radius:2px;color:var(--preto)}
+.tile:hover .t-nome{color:var(--carmim)}
+.tile:hover .t-ic{background:var(--preto);color:var(--branco)}
+.tile.sem{color:var(--tinta-fraca)}
+.tile.sem .t-nome{color:var(--tinta-fraca)}
+.c-painel .s-pasta{margin-top:8px}
+@media (max-width:860px){.c-grade{grid-template-columns:minmax(0,1fr)}.c-painel{position:static}}
+
+/* próxima sessão */
+.destaque-prox{background:var(--branco);border:1px solid var(--linha);border-left:4px solid var(--ocre);
+  padding:4px clamp(16px,2.6vw,28px) 6px;margin-top:20px}
+.destaque-prox .sessao{border-bottom:0}
+.vazio{font-size:16px;color:var(--tinta-fraca);padding:28px 0}
+
+/* formulários */
+.s-acoes{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;margin-top:16px;padding-top:12px;border-top:1px dashed var(--linha)}
+.btn-form{display:inline-flex;align-items:center;gap:8px;font-family:var(--ui);font-size:14px;font-weight:500;text-decoration:none;
+  background:var(--carmim);color:var(--branco);border:1px solid var(--carmim);border-radius:2px;padding:7px 14px;white-space:nowrap}
+.btn-form:hover{background:var(--branco);color:var(--carmim)}
+.btn-form.sec{background:var(--branco);color:var(--carmim)}
+.btn-form.sec:hover{background:var(--carmim);color:var(--branco)}
+.btn-form.pendente{background:var(--branco);color:var(--tinta-fraca);border:1px dashed var(--linha-forte);cursor:not-allowed}
+.prazo{font-size:13.5px;color:var(--tinta);font-variant-numeric:tabular-nums}
+.prazo b{font-weight:600}
+.prazo.passou{color:var(--tinta-fraca)}
+.pend{font-size:12px;color:var(--tinta-fraca);font-style:italic}
+.fecho{background:var(--branco);border:1px solid var(--linha);border-top:3px solid var(--carmim);padding:16px clamp(14px,2.4vw,22px) 14px;margin-top:22px}
+.fecho h3{font-size:18px}
+.fecho .f-sub{font-size:14.5px;color:var(--tinta-fraca);margin-top:4px}
+.fecho .s-acoes{border-top:0;padding-top:0;margin-top:12px}
+.fecho details{margin-top:12px;font-size:15px}
+.fecho summary{cursor:pointer;font-weight:600;color:var(--preto);font-size:14.5px}
+.fecho summary:hover{color:var(--carmim)}
+.guia{display:grid;gap:8px;margin-top:10px;max-width:80ch}
+.guia dt{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--tinta-fraca)}
+.guia dd{margin:0}
+.guia ul{margin:0;padding-left:18px}
+.prazos{list-style:none;margin:18px 0 0;padding:0;border:1px solid var(--linha);background:var(--branco)}
+.prazos li{display:grid;grid-template-columns:150px minmax(0,1fr) auto;gap:6px 18px;align-items:center;padding:12px 16px;border-top:1px solid var(--linha)}
+.prazos li:first-child{border-top:0}
+.prazos .quando{font-size:14px;font-weight:600;color:var(--carmim);font-variant-numeric:tabular-nums}
+.prazos .oque{font-size:15.5px;min-width:0}
+.prazos .oque span{display:block;font-size:13px;color:var(--tinta-fraca)}
+.prazos li > .btn-form{justify-self:start}
+@media (max-width:640px){.prazos li{grid-template-columns:minmax(0,1fr)}.proto{position:static}}
+.aviso-links{font-size:13.5px;color:var(--tinta-fraca);margin-top:12px;max-width:70ch}
+
+.rodape{background:var(--preto);color:#cfcac2;margin-top:clamp(48px,7vw,80px)}
+.rodape .wrap{padding-block:26px;font-size:13.5px;display:flex;flex-wrap:wrap;gap:8px 28px;justify-content:space-between}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <clipPath id="uk-t"><path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/></clipPath>
+  </defs>
+  <symbol id="fl-pt" viewBox="0 0 21 14" preserveAspectRatio="xMidYMid slice">
+    <rect width="21" height="14" fill="#009c3b"/>
+    <path d="M10.5 1.4 L19.4 7 L10.5 12.6 L1.6 7 Z" fill="#ffdf00"/>
+    <circle cx="10.5" cy="7" r="3.2" fill="#002776"/>
+    <path d="M7.5 6.2 Q10.8 5.4 13.6 7.6" stroke="#ffffff" stroke-width=".7" fill="none"/>
+  </symbol>
+  <symbol id="fl-en" viewBox="0 0 60 30" preserveAspectRatio="xMidYMid slice">
+    <rect width="60" height="30" fill="#012169"/>
+    <path d="M0,0 L60,30 M60,0 L0,30" stroke="#ffffff" stroke-width="6"/>
+    <path d="M0,0 L60,30 M60,0 L0,30" clip-path="url(#uk-t)" stroke="#c8102e" stroke-width="4"/>
+    <path d="M30,0 v30 M0,15 h60" stroke="#ffffff" stroke-width="10"/>
+    <path d="M30,0 v30 M0,15 h60" stroke="#c8102e" stroke-width="6"/>
+  </symbol>
+  <symbol id="fl-es" viewBox="0 0 21 14" preserveAspectRatio="xMidYMid slice">
+    <rect width="21" height="14" fill="#aa151b"/>
+    <rect y="3.5" width="21" height="7" fill="#f1bf00"/>
+  </symbol>
+  <symbol id="ic-baixar" viewBox="0 0 16 16"><path d="M8 2v8m0 0L4.8 6.8M8 10l3.2-3.2M2.5 11.5v2h11v-2" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="ic-pasta" viewBox="0 0 16 16"><path d="M1.8 4.2h4.3l1.5 1.6h6.6v7.4H1.8z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></symbol>
+  <symbol id="ic-busca" viewBox="0 0 16 16"><circle cx="7" cy="7" r="4.6" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M10.4 10.4 14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+</svg>
+
+
+<header class="topo">
+  <div class="wrap">
+    <a class="marca" href="/" aria-label="NETEX, voltar à página inicial">
+      <span class="simbolo" role="img" aria-hidden="true"></span>
+      <span class="logotipo" role="img" aria-label="NETEX, Núcleo de Estudos sobre Transnacionalização e Extremismos"></span>
+    </a>
+    <div class="dir">
+      <span class="membro"><b>Área de membros</b><span class="longo"> · GETEX</span></span>
+      <span class="divisor" aria-hidden="true"></span>
+      <span class="selo-ufu" role="img" aria-label="Universidade Federal de Uberlândia"></span>
+    </div>
+  </div>
+</header>
+
+<div class="restrita">
+  <div class="wrap">
+    <p><strong>Área restrita aos membros do NETEX.</strong></p>
+    <a class="sair" href="/cdn-cgi/access/logout">Sair</a>
+  </div>
+</div>
+
+<main>
+  <div class="wrap">
+    <p class="trilha"><a href="/">NETEX</a> · <a href="/getex.html">GETEX</a> · Área de membros</p>
+    <section class="cabeca">
+      <span class="m-getex" role="img" aria-label="GETEX"></span>
+      <h1>Fascismo em Perspectiva · Ciclo I</h1>
+      <p class="deck">Programa e textos do ciclo. Cada leitura traz a referência completa, a função que cumpre na sessão,
+      o idioma do arquivo e o botão para baixar o PDF da pasta do núcleo.</p>
+      <dl class="dados">
+        <div><dt>Sessões</dt><dd>31, quinzenais</dd></div>
+        <div><dt>Período</dt><dd>20/10/2026 a 13/06/2028</dd></div>
+        <div><dt>Encontros</dt><dd>Terças-feiras, duas horas</dd></div>
+        <div><dt>Carga horária</dt><dd>62 horas</dd></div>
+        <div><dt>Textos na pasta</dt><dd id="conta-textos">69 PDFs</dd></div>
+      </dl>
+      <div class="acoes">
+        <a class="botao" id="bt-programa" href="#" target="_blank" rel="noopener"><svg width="16" height="16" aria-hidden="true"><use href="#ic-baixar"/></svg>Programa completo (DOCX)</a>
+        <a class="link" id="bt-raiz" href="#" target="_blank" rel="noopener">Abrir a pasta de textos no Drive</a>
+      </div>
+    </section>
+  </div>
+
+  <section class="secao">
+    <div class="wrap">
+      <div class="secao-topo">
+        <h2>Como ler esta lista</h2>
+        <p>Os botões abrem o arquivo na pasta do NETEX no Google Drive. É preciso estar conectado à conta Google
+        com o e-mail informado na inscrição.</p>
+      </div>
+      <div class="legenda">
+        <div>
+          <h3>Função de cada leitura</h3>
+          <ul>
+            <li><span><span class="papel p-ancora">Texto-âncora</span></span><span>Leitura de todos os participantes. Não há leitura facultativa.</span></li>
+            <li><span><span class="papel p-contraponto">Contraponto</span></span><span>Lido pelo relator e pelo debatedor da sessão.</span></li>
+            <li><span><span class="papel p-apoio">Apoio</span></span><span>Lido pelo relator e pelo debatedor da sessão.</span></li>
+            <li><span><span class="papel p-enquadramento">Enquadramento</span></span><span>Capítulo de Woodley que situa a corrente na Tabela 1.1. Relator e debatedor.</span></li>
+          </ul>
+          <p class="obs">Conforme a seção 5.3 do programa.</p>
+        </div>
+        <div>
+          <h3>Idioma do arquivo</h3>
+          <ul id="leg-idiomas"></ul>
+          <p class="obs">Quando o núcleo traduzir um texto, a tradução entra ao lado do original com a bandeira do
+          idioma. A sessão 1.2 já mostra como fica: Poulantzas em português, em dois volumes, e em inglês.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="secao" id="prazos">
+    <div class="wrap">
+      <div class="secao-topo">
+        <h2>Próximos prazos</h2>
+        <p>Fichas de leitura e diagnósticos, em ordem de vencimento.</p>
+      </div>
+      <ul class="prazos" id="lista-prazos"></ul>
+      <p class="aviso-links" id="aviso-links"></p>
+    </div>
+  </section>
+
+  <section class="secao" id="proxima">
+    <div class="wrap">
+      <div class="secao-topo"><h2 id="prox-tit">Próxima sessão</h2></div>
+      <div class="destaque-prox" id="prox-corpo"></div>
+    </div>
+  </section>
+
+  <section class="secao" id="programa">
+    <div class="wrap">
+      <div class="secao-topo">
+        <h2>Programa sessão a sessão</h2>
+        <p>Nove blocos, na ordem da Tabela 1.1 de Woodley. As datas de 2028 são projeções e serão reancoradas
+        quando o calendário acadêmico daquele ano for publicado.</p>
+      </div>
+      <nav class="indice" id="indice" aria-label="Módulos"></nav>
+      <div class="filtros">
+        <label class="busca" for="q">
+          <svg width="16" height="16" aria-hidden="true"><use href="#ic-busca"/></svg>
+          <span class="sr">Buscar autor ou título</span>
+          <input id="q" type="search" placeholder="Buscar autor ou título" autocomplete="off">
+        </label>
+        <div class="chips" id="chips" role="group" aria-label="Filtrar por idioma"></div>
+      </div>
+      <p class="resultado" id="resultado" aria-live="polite"></p>
+      <div id="modulos"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="rodape">
+  <div class="wrap">
+    <span>NETEX · Instituto de Economia e Relações Internacionais · Universidade Federal de Uberlândia</span>
+  </div>
+</footer>
+
+<script id="dados" type="application/json">{"modulos": [{"n": 0, "nome": "Abertura metodológica", "autores": "", "nota": "", "sessoes": [{"s": 0, "cod": "", "data": "2026-10-20", "titulo": "Abertura metodológica", "intro": "O objetivo é estabelecer o problema comum antes de ingressar nas correntes interpretativas: por que o fascismo resiste à definição e o que está em jogo na disputa por um “mínimo fascista”. A sessão inclui a instalação do ciclo, o sorteio das relatorias e a pactuação das regras de participação (seções 5 e 6 do programa).", "refs": [{"papel": "ancora", "marca": "W", "curto": "Woodley (2010), cap. 1", "texto": "WOODLEY, D. (2010) <i>Fascism and Political Theory<\/i>, cap. 1, “Fascism and political theory”, com atenção às seções <i>Fascism and historiography<\/i> (pp. 3–10) e <i>Criticisms of typological approaches<\/i> (pp. 10–13).", "arquivos": [{"id": "1Dhv-iknw5srxDy03LMaKsK4jdPn9w3v5", "lang": "en", "b": 1276057}]}, {"papel": "mapa", "curto": "Tabela 1.1 revisada", "texto": "Tabela 1.1 (p. 4) como mapa do percurso. Versão revisada em português, com as notas de referência de Woodley.", "arquivos": [{"id": "1EIGkMYth_J-yIhbYOZhrD52wUuh625gp", "lang": "pt", "b": 258558}]}], "pasta": "1E1uCVj-rSC5R6gUDzDzhnao9iZ4yAmhM"}], "periodo": "out. 2026"}, {"n": 1, "nome": "Marxismo", "autores": "Pollock · Vajda · Poulantzas · Laclau · Lukács · Ahmad", "nota": "", "sessoes": [{"s": 1, "cod": "1.1", "data": "2026-11-03", "titulo": "Capitalismo de Estado e a controvérsia interna à Escola de Frankfurt", "nota": "A escolha de abrir por Pollock–Neumann, e não pelas teses da Internacional Comunista, segue a arquitetura do próprio Woodley: é o debate sobre a natureza estatal ou monopolista do nazismo que organiza toda a tradição marxista posterior.", "refs": [{"papel": "ancora", "marca": "W", "curto": "Pollock (1941a)", "texto": "POLLOCK, F. (1941a) “State capitalism”, <i>Studies in Philosophy and Social Science<\/i>, 9: 200–225.", "arquivos": [{"id": "168d_kH9OB6X5hxbAAVoJyNLbpKE6KWw6", "lang": "en", "b": 1088455}]}, {"papel": "ancora", "marca": "W", "curto": "Pollock (1941b)", "texto": "POLLOCK, F. (1941b) “Is National Socialism a new order?”, <i>idem<\/i>, 9: 440–455.", "arquivos": [{"id": "1Xab4f3DQY3YCNejatEPdZHriwaswC_Mx", "lang": "en", "b": 646852}]}, {"papel": "contraponto", "marca": "W", "curto": "Neumann (1942)", "texto": "NEUMANN, F. (1942) <i>Behemoth: The Structure and Practice of National Socialism<\/i>, “Introduction” e Parte II (economia monopolista totalitária).", "arquivos": [{"id": "1GPk2LsHIYf4ZaUN-CmECPxZiy2dZgK6Z", "lang": "en", "b": 1556964}]}, {"papel": "enquadramento", "marca": "W", "curto": "Woodley (2010), cap. 6", "texto": "WOODLEY, D. (2010) <i>Fascism and Political Theory<\/i>, cap. 6, “Fascism, capitalism and the market” (pp. 132–161).", "arquivos": [{"id": "1dBzaYBlt_Zx5lgezKLZ5eFfV_J6QX0u1", "lang": "en", "b": 175349}]}], "pasta": "18mbh--QYoDq_YC8ppB0flRthWYUcaya2"}, {"s": 2, "cod": "1.2", "data": "2026-11-17", "titulo": "Bonapartismo e forma excepcional do Estado capitalista", "refs": [{"papel": "ancora", "marca": "W", "curto": "Poulantzas (1972 [1970])", "texto": "POULANTZAS, N. (1972 [1970]) <i>Fascismo e ditadura: a III Internacional face ao fascismo<\/i>. Trad. João G. P. Quintela e M. Fernanda S. Granado. Porto: Portucalense, 2 vols.: vol. I, Parte I (fascismo, imperialismo e luta de classes), e vol. II, Parte VII (o Estado fascista).", "alt": "Versão em inglês, também na pasta: POULANTZAS, N. (1974) <i>Fascism and Dictatorship<\/i>. London: New Left Books, Partes I e VII.", "arquivos": [{"id": "1OTLWIx0ogqKieEkp0cIKM4f1p0bZkPTC", "lang": "pt", "b": 25227769, "label": "vol. I"}, {"id": "1CEbsqoJpMAZBTuY0KcWP8hSkI8waMjaI", "lang": "pt", "b": 15276903, "label": "vol. II"}, {"id": "1o2iof_Twg_73ZgQxaU-H9oHIziCG6cu-", "lang": "en", "b": 910818, "label": "ed. 1974"}]}, {"papel": "ancora", "marca": "W", "curto": "Trotsky (1932/2023)", "texto": "TROTSKY, L. (1932/2023) <i>Revolução e contrarrevolução na Alemanha<\/i>, capítulos “Bonapartismo e fascismo” e “O bonapartismo alemão”.", "arquivos": [{"id": "1dwqMuEzo6giZJ6t0SQpntVkOL679WhVZ", "lang": "pt", "b": 1362534}]}, {"papel": "apoio", "marca": "W", "curto": "Sohn-Rethel (1973)", "texto": "SOHN-RETHEL, A. (1973) <i>The Economy and Class Structure of German Fascism<\/i>, cap. 17, “The Class Structure of German Fascism” (pp. 128–139).", "arquivos": [{"id": "1Z9hAjU1gjLyHIEJ4xAHedkUhXT0Te70J", "lang": "en", "b": 393038}]}, {"papel": "enquadramento", "marca": "W", "curto": "Woodley (2010), cap. 4", "texto": "WOODLEY, D. (2010) <i>Fascism and Political Theory<\/i>, cap. 4, “Fascism, sovereignty and the state” (pp. 77–104).", "arquivos": [{"id": "1vqPI1IPyT7Sntrs18N2P6xbLCQZOZNL9", "lang": "en", "b": 164851}]}], "pasta": "1psXpUCnzkC1NTtrdisDgDk4i7dwlMnsW"}, {"s": 3, "cod": "1.3", "data": "2026-12-01", "titulo": "O fascismo como movimento de massas", "refs": [{"papel": "ancora", "marca": "W", "curto": "Vajda (1976)", "texto": "VAJDA, M. (1976) <i>Fascism as a Mass Movement<\/i>. “The Class Organisation of the Petty Bourgeoisie”, caps. I a VI, pp. 13–50.", "arquivos": [{"id": "1eYY5VSmzZaXMGBZ3ho-yIz4ygpezEtVe", "lang": "en", "b": 7727471}]}, {"papel": "ancora", "marca": "W", "curto": "Beetham (1980)", "texto": "BEETHAM, D. (1980) “Introduction”, in <i>Marxists in the Face of Fascism<\/i>.", "arquivos": [{"id": "1lq3vlEBTyNfNH_EnT5sOukT2mlyIPyej", "lang": "en", "b": 20555574}]}, {"papel": "enquadramento", "marca": "W", "curto": "Woodley (2010), cap. 3", "texto": "WOODLEY, D. (2010) <i>Fascism and Political Theory<\/i>, cap. 3, “Fascism and social structure” (pp. 49–76).", "arquivos": [{"id": "1a4ZaCsVd_fihh109w9SXY7MiO2v3AF2r", "lang": "en", "b": 167459}]}], "pasta": "1qqO_1j7xbf6kqirSCDg5oyaObCgaFxxd"}, {"s": 4, "cod": "1.4", "data": "2026-12-15", "titulo": "Ideologia, povo e interpelação", "refs": [{"papel": "ancora", "marca": "W", "curto": "Laclau (1977)", "texto": "LACLAU, E. (1977) <i>Política e ideología en la teoría marxista: Capitalismo, fascismo, populismo<\/i> (Siglo XXI de España General), cap. 3, “Fascismo e Ideologia”.", "arquivos": [{"id": "1K8A_c62xYZUiZuYXIriQlFv-7SKSZLoV", "lang": "es", "b": 1473868}]}], "pasta": "1DZCrMgjR2GHfz6iokqi7TnfPxfp573Gh"}, {"s": 5, "cod": "1.5", "data": "2027-03-02", "titulo": "Irracionalismo e razão destruída", "refs": [{"papel": "ancora", "marca": "W", "curto": "Lukács (2020 [1954])", "texto": "LUKÁCS, G. (2020 [1954]) <i>A destruição da razão<\/i>. Trad. Bernard Herman Hess, Rainer Patriota e Ronaldo Vielmi Fortes. São Paulo: Instituto Lukács. Introdução, “Sobre o irracionalismo como fenômeno internacional do período imperialista” (pp. 9–36), e terceiro capítulo, “Nietzsche como fundador do irracionalismo do período imperialista” (pp. 270–350).", "arquivos": [{"id": "1DI84WhK910snRPX31XDj_VGyOMcTAl-h", "lang": "pt", "b": 2804002}]}, {"papel": "ancora", "marca": "W", "curto": "Ahmad (2000)", "texto": "AHMAD, A. (2000) “Colonialism, fascism and ‘Uncle Shylock’: a reflection on our times”, <i>Frontline<\/i>, 17(17).", "arquivos": [{"id": "1mUTW58hTosfd-tCq4EBinoJ1rMWrKNbK", "lang": "en", "b": 483614}]}, {"papel": "enquadramento", "marca": "W", "curto": "Woodley (2010), cap. 2", "texto": "WOODLEY, D. (2010) <i>Fascism and Political Theory<\/i>, cap. 2, “Fascism, rationality and modernity” (pp. 21–48).", "arquivos": [{"id": "1HUEYfsTlLhG0L7jgIa3TQh3hAw9elJtQ", "lang": "en", "b": 167657}]}], "pasta": "1a9Eufo_cBsWO8g0tiq72ElbCR9hVV3Xu"}], "periodo": "nov. 2026–mar. 2027", "guia": {"autores": "Pollock, Poulantzas, Trotsky, Vajda, Beetham, Laclau, Lukács, Ahmad", "pares": ["Pollock e Neumann: capitalismo de Estado ou capitalismo monopolista sob o nazismo (1.1).", "Poulantzas e Laclau: o peso da ideologia diante das classes na explicação (1.2 e 1.4)."], "anterior": "a sua resposta ao diagnóstico de entrada"}}, {"n": 2, "nome": "Totalitarismo", "autores": "Arendt · Talmon · Kornhauser · Marcuse", "nota": "", "sessoes": [{"s": 6, "cod": "2.1", "data": "2027-03-16", "titulo": "Arendt", "refs": [{"papel": "ancora", "marca": "W", "curto": "Arendt (2012 [1951])", "texto": "ARENDT, H. (2012 [1951]) <i>Origens do totalitarismo<\/i>. Trad. Roberto Raposo. São Paulo: Companhia das Letras, Parte II, cap. 5, “O declínio do Estado-nação e o fim dos direitos do homem”, e Parte III, cap. 4, “Ideologia e terror: uma nova forma de governo” (caps. 9 e 13 da edição original).", "arquivos": [{"id": "1rkRJOxBeIrdwVfnEb00vfvafttS3bdSa", "lang": "pt", "b": 3825116}]}, {"papel": "apoio", "marca": "W", "curto": "Arendt (1958b)", "texto": "ARENDT, H. (1958b) “What is authority?”.", "arquivos": []}], "pasta": "1QOmRxtO35swaBamAb06GsfyMkWQetEVE"}, {"s": 7, "cod": "2.2", "data": "2027-03-30", "titulo": "Democracia totalitária e a síndrome dos seis pontos", "refs": [{"papel": "ancora", "marca": "W", "curto": "Talmon (1952)", "texto": "TALMON, J. L. (1952) <i>The Origins of Totalitarian Democracy<\/i>, “Introduction” e Parte I.", "arquivos": [{"id": "1pT0Wq3aOsDLjKTyiK-IV2iE_5G1Agf0x", "lang": "en", "b": 12784958}]}, {"papel": "ancora", "marca": "W", "curto": "Friedrich e Brzezinski (1956)", "texto": "FRIEDRICH, C. J.; BRZEZINSKI, Z. (1956) <i>Totalitarian Dictatorship and Autocracy<\/i>, caps. 1–2.", "arquivos": [{"id": "1wvpPehUT7KuPSeVG4cK6ZDMeHOXpUKRa", "lang": "en", "b": 23095668}]}], "pasta": "1J3AE4JW0ZCDuqoOpTmIwHXgvjicgk9-q"}, {"s": 8, "cod": "2.3", "data": "2027-04-13", "titulo": "Sociedade de massas e indivíduo sob o nazismo", "refs": [{"papel": "ancora", "marca": "W", "curto": "Kornhauser (1959)", "texto": "KORNHAUSER, W. (1959) <i>The Politics of Mass Society<\/i>, Parte I (teoria da sociedade de massas).", "arquivos": [{"id": "1Vb2GSxHqyTJ9mv8t9mpvw165jcmihUa2", "lang": "en", "b": 9378951}]}, {"papel": "ancora", "marca": "W", "curto": "Marcuse (1942)", "texto": "MARCUSE, H. (1942) “State and individual under National Socialism”, cap. 2, in KELLNER, D. (ed.) <i>Technology, War and Fascism<\/i>, vol. 1.", "arquivos": [{"id": "1T9b7IGUfGDR-ozM7kDbSVqvx26nk7nmp", "lang": "en", "b": 14436736}]}], "pasta": "1gG38g9Dx4-uh74BO0r2UchyG0-PX2Ijg"}, {"s": 9, "cod": "2.4", "data": "2027-04-27", "titulo": "Crítica do conceito", "refs": [{"papel": "ancora", "curto": "Geyer e Fitzpatrick (2009)", "texto": "GEYER, M. (com a colaboração de FITZPATRICK, S.) (2009) “Introduction: After Totalitarianism — Stalinism and Nazism Compared”, in GEYER, M.; FITZPATRICK, S. (orgs.) <i>Beyond Totalitarianism: Stalinism and Nazism Compared<\/i>, pp. 1–37.", "arquivos": [{"id": "1-zYGBp262-j1ubDxcg3KYUvJThBuxl3F", "lang": "en", "b": 2652682}]}, {"papel": "apoio", "marca": "+", "curto": "Traverso (2023)", "texto": "TRAVERSO, E. (2023) <i>O totalitarismo entre história e teoria<\/i>. Trad. Matheus Targueta. Zazie Edições (Pequena Biblioteca de Ensaios).", "arquivos": [{"id": "1cOISLhE7mT8RiBjT2dR2JWhi-tHlk2du", "lang": "pt", "b": 568123}]}], "pasta": "1LKFS8XmTPRD5bCuRXkbU1JY_WxXFbqMh"}], "periodo": "mar.–abr. 2027", "guia": {"autores": "Arendt, Talmon, Friedrich e Brzezinski, Kornhauser, Marcuse, Geyer", "pares": ["Arendt e Friedrich e Brzezinski: forma de governo inédita ou síndrome de traços comparáveis.", "Talmon e Arendt: origens no século XVIII ou no século XIX."], "anterior": "o Marxismo (Módulo 1)"}}, {"n": 3, "nome": "Teoria da modernização", "autores": "Lipset · Sauer · Turner · Gregor", "nota": "Esta é a linha da Tabela 1.1 mais frequentemente esquecida nas leituras brasileiras da matriz, e é justamente a que faz a ponte entre o debate totalitarista dos anos 1950 e a virada culturalista: sem ela, o argumento sobre fascismo e modernidade que reaparece em Mosse e em Griffin fica sem antecedente.", "sessoes": [{"s": 10, "cod": "3.1", "data": "2027-05-11", "titulo": "Extremismo de centro", "refs": [{"papel": "ancora", "marca": "W", "curto": "Lipset (1960)", "texto": "LIPSET, S. M. (1960) <i>Political Man<\/i>, cap. 5, “Fascism — Left, Right and Center”.", "arquivos": [{"id": "1MjaBtzLth3v_q-v_Zc7eYvnNQJjxl-ir", "lang": "en", "b": 16905350}]}, {"papel": "ancora", "marca": "+", "curto": "Sauer (1967)", "texto": "SAUER, W. (1967) “National Socialism: totalitarianism or fascism?”, <i>American Historical Review<\/i>, 73(2): 404–424.", "arquivos": [{"id": "1HYkvP6afGfh4W4zYEpG75CmYZQMB4OZ3", "lang": "en", "b": 2021034}]}, {"papel": "enquadramento", "marca": "W", "curto": "Woodley (2010), cap. 3", "texto": "WOODLEY, D. (2010) <i>Fascism and Political Theory<\/i>, cap. 3, “Fascism and social structure” (pp. 49–76).", "arquivos": [{"id": "1I9fGM54t9GwJhsJJktN-F1KBnZlfaFS7", "lang": "en", "b": 167459}]}], "pasta": "1JCyqNUxbeHOP8V1xPrC9x6VKE0ZFa5Q2"}, {"s": 11, "cod": "3.2", "data": "2027-05-25", "titulo": "Ditaduras desenvolvimentistas", "refs": [{"papel": "ancora", "curto": "Gregor (1976)", "texto": "GREGOR, A. J. (1976) <i>Italian Fascism and Developmental Dictatorship<\/i>, Prefácio (pp. ix–xv) e cap. 9, “Fascism and Development in Comparative Perspective” (pp. 300–334).", "arquivos": [{"id": "17mSdzFITG8LUqoxZjTWDSblx1V17pU_c", "lang": "en", "b": 5259846}]}, {"papel": "ancora", "marca": "+", "curto": "Turner (1972)", "texto": "TURNER, H. A. (1972) “Fascism and modernization”, <i>World Politics<\/i>, 24(4): 547–564.", "arquivos": [{"id": "17XUN4SLCtLXAGc04EiBJxR7dxFB635UV", "lang": "en", "b": 1756377}]}], "pasta": "1YrFtAZJWCV0VEaf1sVnDNR6HLXAYzcbu"}], "periodo": "maio 2027", "guia": {"autores": "Lipset, Sauer, Gregor, Turner", "pares": ["Gregor e Turner: o fascismo modernizou ou foi uma revolta contra a modernidade.", "Lipset e Sauer: quem compõe a base social do fascismo."], "anterior": "o Totalitarismo (Módulo 2)"}}, {"n": 4, "nome": "Fascismo genérico I", "autores": "Nolte · Eugen Weber · Linz", "nota": "", "sessoes": [{"s": 12, "cod": "4.1", "data": "2027-06-08", "titulo": "O fascismo como fenômeno metapolítico", "refs": [{"papel": "ancora", "marca": "W", "curto": "Nolte (1965)", "texto": "NOLTE, E. (1965) <i>Three Faces of Fascism<\/i>, “Part Five: fascism as a metapolitical phenomenon”.", "arquivos": [{"id": "1zTCHY1bg2b04q60BJl_nQM-Gi81g4W0V", "lang": "en", "b": 16064959}]}], "pasta": "1FofxaFY-nfUE3VbGWBN_rH9k5vwOGAoi"}, {"s": 13, "cod": "4.2", "data": "2027-06-22", "titulo": "Variedades e tipologia", "refs": [{"papel": "ancora", "marca": "+", "curto": "Weber (1964)", "texto": "WEBER, E. (1964) <i>Varieties of Fascism: Doctrines of Revolution in the Twentieth Century<\/i>, Parte I.", "arquivos": [{"id": "1h1dXJRYSbC_y3xdW43szW2rEgo7sclGr", "lang": "en", "b": 11035950}]}], "pasta": "1g-EZtVIU5ZQx1-j93d5rNW7600mwdD28"}, {"s": 14, "cod": "4.3", "data": "2027-08-03", "titulo": "A formulação sociológica comparada", "refs": [{"papel": "ancora", "marca": "W", "curto": "Linz (1976)", "texto": "LINZ, J. (1976) “Some notes towards a comparative study of fascism in sociological historical perspective”, in LAQUEUR, W. (ed.) <i>Fascism: A Reader’s Guide<\/i>, pp. 3–121, com atenção às pp. 3–42 (definição do fascismo pelos seus “anti-”, que corresponde à coluna ideológica da Tabela 1.1).", "arquivos": [{"id": "1_pgRsA3H9iwC6jB8BfzmwySqcgodIyNs", "lang": "en", "b": 16007590}]}, {"papel": "ancora", "curto": "Linz (1980)", "texto": "LINZ, J. (1980) “Political space and fascism as a late-comer”, in LARSEN, S. et al. (eds.) <i>Who Were the Fascists?<\/i>, pp. 153–191.", "arquivos": [{"id": "1Ymn_ClhU5eBiJneLooqtgNarNo-jcidU", "lang": "en", "b": 30257906}]}, {"papel": "enquadramento", "marca": "W", "curto": "Woodley (2010), cap. 3", "texto": "WOODLEY, D. (2010) <i>Fascism and Political Theory<\/i>, cap. 3, “Fascism and social structure” (pp. 49–76).", "arquivos": [{"id": "16zQKvy2XMfPp3h54eBNklZcS4IJa1mvw", "lang": "en", "b": 167459}]}], "pasta": "1rNIiwCzedbYjhzwTacuUVLA0rj9PzEEd"}], "periodo": "jun.–ago. 2027", "guia": {"autores": "Nolte, Eugen Weber, Linz", "pares": ["Nolte e Linz: definição pela essência metapolítica ou pela comparação sociológica dos “anti-”.", "Nolte e Weber: um mínimo comum ou variedades nacionais."], "anterior": "a Teoria da modernização (Módulo 3)"}}, {"n": 5, "nome": "Culturalismo", "autores": "Mosse · Sternhell · Kershaw · Diner", "nota": "Para os debatedores do módulo: Woodley (2010, cap. 1, pp. 7–8) critica os culturalistas por explicarem a atração do fascismo “em termos puramente idealistas”, sem considerar os determinantes estruturais e ideológicos do populismo de direita que geram e sustentam os movimentos fascistas.", "sessoes": [{"s": 15, "cod": "5.1", "data": "2027-08-10", "titulo": "A gênese cultural e a estética fascista", "refs": [{"papel": "ancora", "curto": "Mosse (1999)", "texto": "MOSSE, G. L. (1999) <i>The Fascist Revolution: Toward a General Theory of Fascism<\/i>, cap. 1, “Toward a General Theory of Fascism” (pp. 3–38); cap. 2, “Fascist Aesthetics and Society” (pp. 39–45); e cap. 10, “Nazi Aesthetics: Beauty Without Sensuality and the Exhibition of Degenerate Art” (pp. 145–156).", "arquivos": []}], "pasta": "1zUgJU9xfs7p1W_OJr4LExcr8KuQ2nZRX"}, {"s": 16, "cod": "5.2", "data": "2027-08-24", "titulo": "Nacionalismo e masculinidade", "refs": [{"papel": "ancora", "curto": "Mosse (1985)", "texto": "MOSSE, G. L. (1985) <i>Nationalism and Sexuality: Respectability and Abnormal Sexuality in Modern Europe<\/i>, cap. 1, “Introduction: Nationalism and Respectability” (pp. 1–22); cap. 7, “Race and Sexuality: The Role of the Outsider” (pp. 133–152); e cap. 8, “Fascism and Sexuality” (pp. 153–180).", "arquivos": [{"id": "1sVqCLaoiOmG0eYMY-TqrcA1A4XEp-B1M", "lang": "en", "b": 4637496}]}, {"papel": "ancora", "marca": "W", "curto": "Woodley (2010), cap. 9", "texto": "WOODLEY, D. (2010) <i>Fascism and Political Theory<\/i>, cap. 9, “Fascism, gender and sexuality” (pp. 211–231).", "arquivos": [{"id": "143lxDfNieI0swbJOXssixmjmxU0sMElZ", "lang": "en", "b": 2275776}]}], "pasta": "1ZMoVySdOuKP0zTtgatWuFZbOQWn6FC-j"}, {"s": 17, "cod": "5.3", "data": "2027-09-14", "titulo": "A revisão anti-materialista e o nascimento da ideologia fascista", "refs": [{"papel": "ancora", "curto": "Sternhell, Sznajder e Asheri (1994)", "texto": "STERNHELL, Z.; SZNAJDER, M.; ASHERI, M. (1994) <i>The Birth of Fascist Ideology: From Cultural Rebellion to Political Revolution<\/i>, “Introduction: Fascism as an Alternative Political Culture” (pp. 3–35) e “Epilogue: From a Cultural Rebellion to a Political Revolution” (pp. 233–258).", "arquivos": [{"id": "1w5fjjWKK4Thkkw6y-UrEJiMSWXXLcTe4", "lang": "en", "b": 2185805}]}, {"papel": "ancora", "marca": "W", "curto": "Sternhell (1987)", "texto": "STERNHELL, Z. (1987) “The ‘anti-materialist’ revision of Marxism as an aspect of the rise of fascist ideology”, <i>Journal of Contemporary History<\/i>, 22: 379–400.", "arquivos": [{"id": "1YWlmi_EdgDo3-dkCj1Xiuavt-jgKEC2L", "lang": "en", "b": 2286598}]}], "pasta": "1kNdZUx9gAz2xoiGpl0bthvFXyLnhBGTB"}, {"s": 18, "cod": "5.4", "data": "2027-09-28", "titulo": "Comparando nazismo e fascismo", "refs": [{"papel": "ancora", "curto": "Kershaw (2000)", "texto": "KERSHAW, I. (2000) <i>The Nazi Dictatorship: Problems and Perspectives of Interpretation<\/i>, 4ª ed., cap. 1, “Historians and the Problem of Explaining Nazism” (pp. 1–22), e cap. 2, “The Essence of Nazism: Form of Fascism, Brand of Totalitarianism, or Unique Phenomenon?” (pp. 23–54), este último correspondente à leitura que Woodley faz de Kershaw (“Nazism manifests aspects of fascism”).", "arquivos": [{"id": "1Y3UfJ0KKU3r56d1U1G-_uTx8tTJw_urP", "lang": "en", "b": 2636379}]}, {"papel": "ancora", "curto": "Kershaw (1987)", "texto": "KERSHAW, I. (1987) <i>The “Hitler Myth”: Image and Reality in the Third Reich<\/i>, “Introduction” (pp. 1–10) e “Conclusion” (pp. 253–269).", "arquivos": [{"id": "1dYvt5_X4-ixEWgpIneRmsVfU02pwDSVM", "lang": "en", "b": 15874192}]}], "pasta": "1Rc8jSsG5ehXrbH-7B0uj-4JxaWwWFzra"}, {"s": 19, "cod": "5.5", "data": "2027-10-19", "titulo": "Singularidade do nazismo e limites da explicação", "refs": [{"papel": "ancora", "curto": "Diner (2000)", "texto": "DINER, D. (2000) <i>Beyond the Conceivable: Studies on Germany, Nazism, and the Holocaust<\/i>. Berkeley: University of California Press, cap. 7, “Historical Understanding and Counterrationality: The Judenrat as Epistemological Vantage”, e cap. 8, “On Rationality and Rationalization: An Economistic Explanation of the Final Solution” (pp. 130–159).", "arquivos": [{"id": "1w47tb85H2WC0II4apIR--X4zFDC2q53f", "lang": "en", "b": 8173754}]}, {"papel": "ancora", "curto": "Bauman (1989)", "texto": "BAUMAN, Z. (1989) <i>Modernity and the Holocaust<\/i>, cap. 4, “The Uniqueness and Normality of the Holocaust” (pp. 83–116), e cap. 8, “Afterthought: Rationality and Shame” (pp. 201–207).", "arquivos": [{"id": "1XsZdRozyzLXE0xXtePEM2ewcbj2w72Kd", "lang": "en", "b": 1480093}]}, {"papel": "ancora", "curto": "Traverso (2003)", "texto": "TRAVERSO, E. (2003) <i>The Origins of Nazi Violence<\/i>. New York: The New Press, “Introduction” (pp. 1–20) e “Conclusion” (pp. 149–153; recomenda-se iniciar na p. 147).", "arquivos": [{"id": "1A5shf0XOcJV--5dp2cD-bxDnnlpMAXCf", "lang": "en", "b": 10207221}]}, {"papel": "enquadramento", "marca": "W", "curto": "Woodley (2010), cap. 5", "texto": "WOODLEY, D. (2010) <i>Fascism and Political Theory<\/i>, cap. 5, “Fascism and violence” (pp. 105–131).", "arquivos": [{"id": "1pkahJK4WzivEtRHLNxbezdJhqW_fgWHR", "lang": "en", "b": 161895}]}], "pasta": "1kJhNPM_eQVt8QOS0lLyEgkJnAXJyG1uu"}], "periodo": "ago.–out. 2027", "guia": {"autores": "Mosse, Sternhell (com Sznajder e Asheri), Kershaw, Diner, Bauman, Traverso", "pares": ["Mosse e Sternhell: raízes estéticas e litúrgicas ou raízes intelectuais na revisão antimaterialista do marxismo.", "Bauman e Diner: o Holocausto como produto da racionalidade moderna ou como contrarracionalidade."], "anterior": "o Fascismo genérico I (Módulo 4)"}}, {"n": 6, "nome": "Fascismo genérico II", "autores": "Griffin · Eatwell · Payne · Paxton", "nota": "", "sessoes": [{"s": 20, "cod": "6.1", "data": "2027-10-26", "titulo": "Ultranacionalismo populista palingenético", "refs": [{"papel": "ancora", "marca": "W", "curto": "Griffin (1991)", "texto": "GRIFFIN, R. (1991) <i>The Nature of Fascism<\/i>, caps. 1–2.", "arquivos": [{"id": "1rEbTjAvewv5loaXR65xn76MbVIcNJAnr", "lang": "en", "b": 2243755}]}], "pasta": "1XFztZIrlTxoX9TlECpF95WA9SK-JsZWZ"}, {"s": 21, "cod": "6.2", "data": "2027-11-09", "titulo": "Fascismo como modernismo político", "refs": [{"papel": "ancora", "curto": "Griffin (2007)", "texto": "GRIFFIN, R. (2007) <i>Modernism and Fascism: The Sense of a Beginning under Mussolini and Hitler<\/i>. Basingstoke: Palgrave Macmillan, cap. 1, “The Paradoxes of ‘Fascist Modernism’”; cap. 2, “Two Modes of Modernism”; e cap. 6, “The Rise of Political Modernism 1848–1945”.", "arquivos": [{"id": "1d15hX3I3NWYCJjQHJa8XlIYm2Xg7NUA_", "lang": "en", "b": 5908536}]}, {"papel": "enquadramento", "marca": "W", "curto": "Woodley (2010), cap. 2", "texto": "WOODLEY, D. (2010) <i>Fascism and Political Theory<\/i>, cap. 2, “Fascism, rationality and modernity” (pp. 21–48).", "arquivos": [{"id": "1qYPYmfPdDCPDKE24uQT1UoePEbJzCyF-", "lang": "en", "b": 167657}]}], "pasta": "1cSt7FyCY-_A8adcg-aJBZ2k2P8QhgCe5"}, {"s": 22, "cod": "6.3", "data": "2027-11-23", "titulo": "O mínimo fascista como problema de ideologia", "refs": [{"papel": "ancora", "marca": "W", "curto": "Eatwell (1992)", "texto": "EATWELL, R. (1992) “Towards a New Model of Generic Fascism”, <i>Journal of Theoretical Politics<\/i>, 4(2): 161–194.", "arquivos": [{"id": "1_2dfmY-r879z3ZF9YJdQ-NRYXTK53gd8", "lang": "en", "b": 4151328}]}, {"papel": "ancora", "marca": "W", "curto": "Eatwell (1996)", "texto": "EATWELL, R. (1996) “On defining the ‘fascist minimum’: the centrality of ideology”, <i>Journal of Political Ideologies<\/i>, 1(3): 303–319.", "arquivos": [{"id": "1MdIgZjwUxz8gRw4tlYvLxWcdUmIXDrI7", "lang": "en", "b": 1304364}]}], "pasta": "1zVNBrS14CXTOTEH6FJiGqPne5mgB3tHi"}, {"s": 23, "cod": "6.4", "data": "2028-03-07", "titulo": "A descrição tipológica", "refs": [{"papel": "ancora", "curto": "Payne (1995)", "texto": "PAYNE, S. G. (1995) <i>A History of Fascism, 1914–1945<\/i>. Madison: University of Wisconsin Press, “Introduction: Fascism: A Working Definition” (pp. 3–19); cap. 13, “Generic Fascism?” (pp. 462–470) e cap. 15, “Elements of a Retrodictive Theory of Fascism” (pp. 487–495).", "arquivos": [{"id": "1VT-zQRT4BJ0kYvCOrCwaDCTagdaiRDO5", "lang": "en", "b": 10442654}]}], "pasta": "1VJ8d3jobOjKMfJ8xP6Wh4D1Pa_sD8yPG"}, {"s": 24, "cod": "6.5", "data": "2028-03-21", "titulo": "Anatomia e processo", "refs": [{"papel": "ancora", "marca": "+", "curto": "Paxton (1998)", "texto": "PAXTON, R. O. (1998) “The five stages of fascism”, <i>Journal of Modern History<\/i>, 70(1): 1–23.", "arquivos": [{"id": "18vP2pdw-3m20IWrEgUON-q2CAfyBinfK", "lang": "en", "b": 161225}]}, {"papel": "ancora", "curto": "Paxton (2004)", "texto": "PAXTON, R. O. (2004) <i>The Anatomy of Fascism<\/i>. New York: Knopf, cap. 1, “Introduction” (pp. 3–23), e cap. 8, “What Is Fascism?” (pp. 206–220).", "arquivos": [{"id": "1dgVEtCblA4KDUc-O3BIo080r-dVoDG_-", "lang": "en", "b": 1340259}]}], "pasta": "1VAW77oYS3el62D7vCYIWTdkoOa2f7qeP"}], "periodo": "out. 2027–mar. 2028", "guia": {"autores": "Griffin, Eatwell, Payne, Paxton", "pares": ["Griffin e Paxton: definir pelo núcleo ideológico ou pelo que os fascistas fizeram, em estágios.", "Griffin e Payne: um tipo ideal de uma frase ou uma descrição tipológica em várias dimensões."], "anterior": "o Culturalismo (Módulo 5)"}}, {"n": 7, "nome": "Teoria crítica / pós-estruturalismo", "autores": "Adorno/Benjamin · Hewitt · Lacoue-Labarthe · Agamben · Neocleous", "nota": "", "sessoes": [{"s": 25, "cod": "7.1", "data": "2028-04-04", "titulo": "Estetização da política", "nota": "Woodley (2010) remete à carta de Adorno de 02/08/1935 (Hornberg). O programa adota a de 18/03/1936 porque é a resposta direta ao ensaio sobre a obra de arte; a carta de 1935 está no mesmo volume (<i>Aesthetics and Politics<\/i>, pp. 110–120).", "refs": [{"papel": "ancora", "marca": "W", "curto": "Benjamin (1930)", "texto": "BENJAMIN, W. (1930) “Theories of German fascism”, <i>New German Critique<\/i>, 17 (1979): 120–128.", "arquivos": [{"id": "10LDPI0TdykSanQfXDogqzF6C2umF3Y0A", "lang": "en", "b": 1044566}]}, {"papel": "ancora", "curto": "Benjamin (2008 [1936])", "texto": "BENJAMIN, W. (2008 [1936]) <i>The Work of Art in the Age of Mechanical Reproduction<\/i>. Trad. J. A. Underwood. London: Penguin (Great Ideas), com atenção ao “Afterword” e à nota 22.", "arquivos": [{"id": "1G1pSKakPDaVo4hMsU49G8s0F52NkXgMp", "lang": "en", "b": 377778}]}, {"papel": "ancora", "curto": "Adorno (1980 [1936])", "texto": "ADORNO, T. W. (1980 [1936]) “Letters to Walter Benjamin”, II (Londres, 18/03/1936), in BLOCH, E. et al. <i>Aesthetics and Politics<\/i>. London: Verso, pp. 120–126.", "arquivos": [{"id": "1pELSxLnAgq_xMvze8_VvSnxfcgD3mV27", "lang": "en", "b": 3238743}]}, {"papel": "enquadramento", "marca": "W", "curto": "Woodley (2010), cap. 1", "texto": "WOODLEY, D. (2010) <i>Fascism and Political Theory<\/i>, cap. 1, seção “Towards a critical theory of fascism” (pp. 13–19), como enquadramento do módulo.", "arquivos": [{"id": "1nOSRNubb5qzvuDh4fz0mO-08N1xqkOVK", "lang": "en", "b": 122895}]}], "pasta": "1tZ7H0NYdq4kDQnlzxPHveCYvVllIrWEj"}, {"s": 26, "cod": "7.2", "data": "2028-04-18", "titulo": "Antinomias da razão esclarecida", "refs": [{"papel": "ancora", "curto": "Horkheimer e Adorno (2002 [1944/1947])", "texto": "HORKHEIMER, M.; ADORNO, T. W. (2002 [1944/1947]) <i>Dialectic of Enlightenment: Philosophical Fragments<\/i>. Org. G. Schmid Noerr. Trad. E. Jephcott. Stanford: Stanford University Press, “The Concept of Enlightenment” (pp. 1–34) e “Elements of Anti-Semitism: Limits of Enlightenment” (pp. 137–172).", "arquivos": [{"id": "1ExEV-p_N2xwOP8J16viL6J9V_9hl_88Q", "lang": "en", "b": 26691026}]}, {"papel": "ancora", "curto": "Adorno (1982 [1951])", "texto": "ADORNO, T. W. (1982 [1951]) “Freudian Theory and the Pattern of Fascist Propaganda”, in ARATO, A.; GEBHARDT, E. (orgs.) <i>The Essential Frankfurt School Reader<\/i>. New York: Continuum, pp. 118–137.", "arquivos": [{"id": "1FwcRJ9whev3gGR2y9ha336UKyhC02MTa", "lang": "en", "b": 1964517}]}], "pasta": "1-CuiBIUJ0aiiNB8b7u36kq9apmdMpQp4"}, {"s": 27, "cod": "7.3", "data": "2028-05-02", "titulo": "O mito nazista e a ficção do político", "refs": [{"papel": "ancora", "curto": "Lacoue-Labarthe e Nancy (1990)", "texto": "LACOUE-LABARTHE, P.; NANCY, J.-L. (1990) “The Nazi myth”, <i>Critical Inquiry<\/i>, 16(2): 291–312.", "arquivos": [{"id": "1ixF88ebflTlPkPiYyIhNiX3E0TeH_kc8", "lang": "en", "b": 2483587}]}, {"papel": "ancora", "curto": "Lacoue-Labarthe (1990 [1987])", "texto": "LACOUE-LABARTHE, P. (1990 [1987]) <i>Heidegger, Art and Politics: The Fiction of the Political<\/i>. Trad. Chris Turner. Oxford: Basil Blackwell, caps. 6, “technē” (onde se forma a noção de “national-aestheticism”), e 7, “The Aestheticization of Politics” (pp. 53–76).", "arquivos": [{"id": "1XHPEXsHegdWSSEw_Qp0pHX4gzzGaBRv_", "lang": "en", "b": 19708129}]}, {"papel": "ancora", "curto": "Hewitt (1993)", "texto": "HEWITT, A. (1993) <i>Fascist Modernism: Aesthetics, Politics, and the Avant-Garde<\/i>. Stanford: Stanford University Press, “Introduction: Why Fascist Modernism?”, pp. 1–19.", "arquivos": [{"id": "1_mCm3AO5yb_2K5HcPJdN1ud1b0u3NmqK", "lang": "en", "b": 20437362}]}, {"papel": "ancora", "curto": "Hewitt (2004)", "texto": "HEWITT, A. (2004) “Ideological Positions in the Fascism Debate”, in FENNER, A.; WEITZ, E. D. (orgs.) <i>Fascism and Neofascism: Critical Writings on the Radical Right in Europe<\/i>. New York: Palgrave Macmillan, pp. 19–41.", "arquivos": [{"id": "1Og8vl6kjnC7oOZ4pbbljS0Jdgpd7GD4v", "lang": "en", "b": 2495646}]}], "pasta": "1TT3uPf6aFtdNvdO2O3zHgJwOPMd86Nl4"}, {"s": 28, "cod": "7.4", "data": "2028-05-16", "titulo": "Soberania, exceção e biopolítica", "refs": [{"papel": "ancora", "curto": "Agamben (1998 [1995])", "texto": "AGAMBEN, G. (1998 [1995]) <i>Homo Sacer: Sovereign Power and Bare Life<\/i>. Trad. Daniel Heller-Roazen. Stanford: Stanford University Press, Introdução (pp. 1–12) e Parte III, §1, §4 e §7 (pp. 119–125, 144–153, 166–180).", "arquivos": [{"id": "1VIAYQKRsU5_FVDv68xa-0AZXocpy9_do", "lang": "en", "b": 2822617}]}, {"papel": "ancora", "curto": "Agamben (2005 [2003])", "texto": "AGAMBEN, G. (2005 [2003]) <i>State of Exception<\/i>. Trad. Kevin Attell. Chicago: University of Chicago Press, caps. 1–2, pp. 1–40.", "arquivos": [{"id": "1JzzK9s3tGrIYy9rmtKedAuZpJL3yKzrn", "lang": "en", "b": 5374705}]}, {"papel": "enquadramento", "marca": "W", "curto": "Woodley (2010), cap. 4", "texto": "WOODLEY, D. (2010) <i>Fascism and Political Theory<\/i>, cap. 4, “Fascism, sovereignty and the state” (pp. 77–104).", "arquivos": [{"id": "1VWBujKmzj0K47pbCqozH2Ql5Nq1xd5GB", "lang": "en", "b": 164851}]}], "pasta": "1Mb_9vOdLIAQZWBenyfkKcDsMMpopX10M"}, {"s": 29, "cod": "7.5", "data": "2028-05-30", "titulo": "A permanência do fascismo na normalidade liberal", "refs": [{"papel": "ancora", "curto": "Neocleous (1997)", "texto": "NEOCLEOUS, M. (1997) <i>Fascism<\/i>. Buckingham: Open University Press (Concepts in Social Thought).", "arquivos": [{"id": "1TEh6dlDBtaqLk9l32VHgIb1M1mQenP1r", "lang": "en", "b": 6711689}]}, {"papel": "ancora", "marca": "W", "curto": "Neocleous (2006)", "texto": "NEOCLEOUS, M. (2006) “The problem with normality: taking exception to permanent emergency”, <i>Alternatives<\/i>, 31: 191–213.", "arquivos": [{"id": "1awOAGwqog10cTuOYmhtf0CSbq-O-aJtU", "lang": "en", "b": 159079}]}], "pasta": "1baDMiWb5MvJqBUlYWX1f1_3qqsmHFHpI"}], "periodo": "abr.–maio 2028", "guia": {"autores": "Benjamin, Adorno, Horkheimer, Lacoue-Labarthe e Nancy, Hewitt, Agamben, Neocleous", "pares": ["Benjamin e Adorno: a carta de março de 1936 contra o ensaio sobre a obra de arte.", "Agamben e Neocleous: a exceção como paradigma ou o problema situado na própria normalidade liberal."], "anterior": "o Fascismo genérico II (Módulo 6)"}}, {"n": 8, "nome": "Balanço e finalização do livro", "autores": "", "nota": "", "sessoes": [{"s": 30, "cod": "", "data": "2028-06-13", "titulo": "Balanço e finalização do livro", "intro": "Encerramento do ciclo, sem leitura prévia. O grupo revisa a Tabela 1.1 ampliada, preenchida ao longo das sessões, e fecha a organização do livro que reunirá a tabela e o aparato crítico (seção 8 do programa).", "refs": []}], "periodo": "jun. 2028"}], "programa": {"id": "1B9rby_7HQsZtB7ih8j8EPO-LXGBC-6yh", "b": 526267}, "raiz": "1KthIrE7Rhq1sz8uYVllOREubHIDrdawf"}</script>
+<script>
+(function(){
+  var D = JSON.parse(document.getElementById('dados').textContent);
+  var IDI = {pt:{nome:'Português',cod:'PT'}, en:{nome:'Inglês',cod:'EN'}, es:{nome:'Espanhol',cod:'ES'}};
+  var PAPEL = {ancora:'Texto-âncora', contraponto:'Contraponto', apoio:'Apoio', enquadramento:'Enquadramento', mapa:'Mapa do percurso'};
+  var PREF = {ancora:'', mapa:'', contraponto:'Contraponto: ', apoio:'Apoio: ', enquadramento:'Apoio (enquadramento): '};
+  var DIAS = ['domingo','segunda','terça','quarta','quinta','sexta','sábado'];
+  var estado = {v:'a', q:'', l:''};
+
+  /* Links dos formulários. Preencher quando forem criados no Google Forms:
+     url = endereço do formulário até "viewform"; campo = número do entry.NNN da pergunta Sessão ou Módulo,
+     tirado do link pré-preenchido. Com url vazia, o botão aparece tracejado e inativo. */
+  var FORMS = {
+    ficha:       {url: 'https://docs.google.com/forms/d/e/1FAIpQLSdAmnGNyDfAPBlDuFs4d9Q3c1p2phubzAw-2uBQxm6LL2NZRg/viewform', campo: '2121420680'},
+    avaliacao:   {url: '', campo: ''},
+    diagnostico: {url: 'https://docs.google.com/forms/d/e/1FAIpQLScnPIc2XOGt6y7K9kts98oo0D99sTIisfbFYTE-uhFcExvGJg/viewform'}
+  };
+  var agora = new Date();
+  var DIAG = {entrada: {fecha: new Date(2026, 9, 20, 18, 0)},
+              saida:   {abre: new Date(2028, 5, 6, 0, 0), fecha: new Date(2028, 5, 11, 19, 0)}};
+
+  function pad(n){ return (n < 10 ? '0' : '') + n; }
+  function quando(d, hora){ return DIAS[d.getDay()] + ', ' + pad(d.getDate()) + '/' + pad(d.getMonth()+1) + '/' + d.getFullYear() + ', ' + hora; }
+  function opcaoSessao(s){ return 'Sessão ' + s.s + (s.cod ? ' · ' + s.cod : '') + ' · ' + s.titulo + ' (' + s.data.slice(8,10) + '/' + s.data.slice(5,7) + '/' + s.data.slice(0,4) + ')'; }
+  function opcaoModulo(m){ return 'Módulo ' + m.n + ' · ' + m.nome; }
+  function linkForm(tipo, valor){
+    var f = FORMS[tipo]; if (!f || !f.url) return '';
+    return (f.campo && valor) ? f.url + '?usp=pp_url&entry.' + f.campo + '=' + encodeURIComponent(valor) : f.url;
+  }
+  function botaoForm(tipo, valor, rotulo, sec){
+    var u = linkForm(tipo, valor);
+    if (!u) return '<span class="btn-form pendente" aria-disabled="true" title="Fica ativo quando o link do formulário for inserido">' + rotulo + '</span>';
+    return '<a class="btn-form' + (sec ? ' sec' : '') + '" href="' + u + '" target="_blank" rel="noopener">' + rotulo + '</a>';
+  }
+  function prazoFicha(s){ var d = dataObj(s.data); return new Date(d.getFullYear(), d.getMonth(), d.getDate() - 2, 19, 0); }
+  function janelaModulo(m){
+    var u = dataObj(m.sessoes[m.sessoes.length - 1].data);
+    return {abre: new Date(u.getFullYear(), u.getMonth(), u.getDate(), 21, 0), fecha: new Date(u.getFullYear(), u.getMonth(), u.getDate() + 6, 23, 59)};
+  }
+  function linhaPrazo(d, hora){
+    var passou = agora > d;
+    return '<span class="prazo' + (passou ? ' passou' : '') + '">' + (passou ? 'Prazo encerrado: ' + quando(d, hora) : 'Prazo: <b>' + quando(d, hora) + '</b>') + '</span>';
+  }
+  function acoesSessao(s){
+    if (!s.refs.length) return '';
+    return '<div class="s-acoes">' + botaoForm('ficha', opcaoSessao(s), 'Enviar ficha de leitura') + linhaPrazo(prazoFicha(s), '19h') + '</div>';
+  }
+  function fechoModulo(m){
+    if (m.n === 0) {
+      return '<div class="fecho"><h3>Diagnóstico de entrada</h3><p class="f-sub">Quinze minutos, sem consultar textos. As mesmas perguntas voltam antes da sessão final, para comparar.</p>' +
+        '<div class="s-acoes">' + botaoForm('diagnostico', '', 'Responder o diagnóstico') + linhaPrazo(DIAG.entrada.fecha, '18h') + '</div></div>';
+    }
+    if (m.n === 8) {
+      return '<div class="fecho"><h3>Diagnóstico de saída</h3><p class="f-sub">As mesmas perguntas de outubro de 2026, agora com a releitura da sua resposta de entrada. Abre em 06/06/2028.</p>' +
+        '<div class="s-acoes">' + botaoForm('diagnostico', '', 'Responder o diagnóstico') + linhaPrazo(DIAG.saida.fecha, '19h') + '</div></div>';
+    }
+    var j = janelaModulo(m);
+    var situacao = agora < j.abre ? 'Abre depois da última sessão do módulo, em ' + pad(j.abre.getDate()) + '/' + pad(j.abre.getMonth()+1) + '/' + j.abre.getFullYear()
+      : agora <= j.fecha ? 'Aberta' : 'Encerrada';
+    return '<div class="fecho"><h3>Avaliação do Módulo ' + m.n + ' · ' + m.nome + '</h3>' +
+      '<p class="f-sub">' + situacao + '. Anônima, leva três minutos e orienta as revisões do programa.</p>' +
+      '<div class="s-acoes">' + botaoForm('avaliacao', opcaoModulo(m), 'Avaliar o módulo', true) + linhaPrazo(j.fecha, '23h59') + '</div></div>';
+  }
+
+  function urlBaixar(id){ return 'https://drive.google.com/uc?export=download&id=' + id; }
+  function urlVer(id){ return 'https://drive.google.com/file/d/' + id + '/view'; }
+  function urlPasta(id){ return 'https://drive.google.com/drive/folders/' + id; }
+  function tam(b){ return b < 1048576 ? Math.max(1, Math.round(b/1024)) + ' KB' : (b/1048576).toFixed(1).replace('.', ',') + ' MB'; }
+  function dataObj(s){ var p = s.split('-'); return new Date(+p[0], +p[1]-1, +p[2]); }
+  function fmtData(s){ var d = dataObj(s); return DIAS[d.getDay()] + ', ' + s.slice(8,10) + '/' + s.slice(5,7) + '/' + s.slice(0,4); }
+  function semTags(h){ return h.replace(/<[^>]+>/g, ''); }
+  function norm(t){ return t.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase(); }
+  function ic(nome, n){ n = n || 16; return '<svg width="'+n+'" height="'+n+'" aria-hidden="true"><use href="#ic-'+nome+'"/></svg>'; }
+  function bandeira(l){ return '<svg class="flag" aria-hidden="true"><use href="#fl-'+l+'"/></svg>'; }
+  function idioma(l){ return '<span class="idioma" title="'+IDI[l].nome+'">'+bandeira(l)+'<span aria-hidden="true">'+IDI[l].cod+'</span><span class="sr">'+IDI[l].nome+'</span></span>'; }
+  function papel(p){ return '<span class="papel p-'+p+'">'+PAPEL[p]+'</span>'; }
+  function botaoBaixar(a, curto){
+    var rotulo = 'Baixar ' + curto + (a.label ? ', ' + a.label : '') + ' (' + IDI[a.lang].nome + ', PDF, ' + tam(a.b) + ')';
+    return '<a class="baixar" href="'+urlBaixar(a.id)+'" target="_blank" rel="noopener" aria-label="'+rotulo+'">'+ic('baixar',15)+'Baixar</a>';
+  }
+  function falta(){ return '<span class="falta">Arquivo ainda não está na pasta</span>'; }
+
+  /* hoje e próxima sessão */
+  var hoje = new Date(); hoje.setHours(0,0,0,0);
+  var todas = [];
+  D.modulos.forEach(function(m){ m.sessoes.forEach(function(s){ s.mod = m; todas.push(s); }); });
+  var proxima = todas.filter(function(s){ return dataObj(s.data) >= hoje; })[0] || null;
+
+  /* corpo das leituras nos três desenhos */
+  function corpoA(s, refs){
+    return '<ol class="lista">' + refs.map(function(r){
+      var arqs = r.arquivos.length ? r.arquivos.map(function(a){
+        return '<div class="arq">' + idioma(a.lang) +
+          '<span class="info"><span class="tam">' + (a.label ? '<b class="rot">' + a.label + '</b> · ' : '') + 'PDF · ' + tam(a.b) + '</span>' +
+          '<a class="abrir" href="'+urlVer(a.id)+'" target="_blank" rel="noopener">abrir no Drive</a></span>' +
+          botaoBaixar(a, r.curto) + '</div>';
+      }).join('') : falta();
+      return '<li class="leitura"><div class="l-ref">' + papel(r.papel) + '<p class="ref">' + r.texto + '</p>' +
+        (r.alt ? '<p class="alt">' + r.alt + '</p>' : '') + '</div><div class="l-arq">' + arqs + '</div></li>';
+    }).join('') + '</ol>';
+  }
+  function corpoB(s, refs){
+    return '<div class="rolagem"><table class="t-leit"><thead><tr><th scope="col">Leitura</th><th scope="col">Função</th>' +
+      '<th scope="col">Idioma</th><th scope="col">Arquivo</th></tr></thead><tbody>' + refs.map(function(r){
+      var idis = r.arquivos.length ? r.arquivos.map(function(a){ return '<div>' + idioma(a.lang) + '</div>'; }).join('') : '<div>—</div>';
+      var arqs = r.arquivos.length ? r.arquivos.map(function(a){
+        return '<div>' + botaoBaixar(a, r.curto) + '<span class="tam">' + (a.label ? a.label + ' · ' : '') + tam(a.b) + '</span></div>';
+      }).join('') : '<div>' + falta() + '</div>';
+      return '<tr><td><p class="ref">' + r.texto + '</p>' + (r.alt ? '<p class="alt">' + r.alt + '</p>' : '') + '</td>' +
+        '<td class="c-papel">' + papel(r.papel) + '</td><td class="c-idi"><div class="pilha">' + idis + '</div></td>' +
+        '<td class="c-arq"><div class="pilha">' + arqs + '</div></td></tr>';
+    }).join('') + '</tbody></table></div>';
+  }
+  function corpoC(s, refs){
+    var prog = refs.map(function(r){
+      return '<p class="ref">' + (PREF[r.papel] ? '<span class="pref">' + PREF[r.papel] + '</span>' : '') + r.texto +
+        (r.marca ? '<sup>[' + r.marca + ']</sup>' : '') + '</p>' + (r.alt ? '<p class="alt">' + r.alt + '</p>' : '');
+    }).join('');
+    var tiles = '';
+    refs.forEach(function(r){
+      if (!r.arquivos.length){
+        tiles += '<div class="tile sem"><span class="flag" aria-hidden="true" style="box-shadow:inset 0 0 0 1px var(--linha-forte)"></span>' +
+          '<span class="t-nome">' + r.curto + '<span class="t-sub">arquivo ainda não está na pasta</span></span><span></span></div>';
+        return;
+      }
+      r.arquivos.forEach(function(a){
+        tiles += '<a class="tile" href="'+urlBaixar(a.id)+'" target="_blank" rel="noopener" aria-label="Baixar '+r.curto+(a.label?', '+a.label:'')+' ('+IDI[a.lang].nome+', '+tam(a.b)+')">' +
+          idioma(a.lang) + '<span class="t-nome">' + r.curto + '<span class="t-sub">' + (a.label ? a.label + ' · ' : '') + PAPEL[r.papel] + ' · ' + tam(a.b) + '</span></span>' +
+          '<span class="t-ic">' + ic('baixar', 15) + '</span></a>';
+      });
+    });
+    return '<div class="c-grade"><div class="c-prog">' + prog + '</div><aside class="c-painel" aria-label="Textos desta sessão"><h4>Textos desta sessão</h4>' +
+      tiles + (s.pasta ? '<a class="s-pasta" href="'+urlPasta(s.pasta)+'" target="_blank" rel="noopener">'+ic('pasta',15)+'Baixar a pasta inteira no Drive</a>' : '') + '</aside></div>';
+  }
+
+  function sessaoHTML(s, refs, emDestaque){
+    var d = dataObj(s.data), passada = d < hoje, ehProx = proxima && s.s === proxima.s;
+    var tags = (s.data >= '2028-01-01' ? '<span class="tag">data em projeção</span>' : '') +
+      (ehProx && !emDestaque ? '<span class="tag prox">próxima</span>' : '') + (passada ? '<span class="tag">realizada</span>' : '');
+    var corpo = '';
+    if (!s.refs.length) corpo = '<p class="sem-leitura">Sessão sem leitura prévia.</p>';
+    else corpo = (estado.v === 'b' ? corpoB : estado.v === 'c' ? corpoC : corpoA)(s, refs);
+    var pasta = (s.pasta && estado.v !== 'c') ? '<a class="s-pasta" href="'+urlPasta(s.pasta)+'" target="_blank" rel="noopener">'+ic('pasta',15)+'Pasta da sessão no Drive (baixar tudo de uma vez)</a>' : '';
+    return '<article class="sessao' + (passada ? ' realizada' : '') + '"' + (emDestaque ? '' : ' id="s'+s.s+'"') + '>' +
+      '<p class="s-meta"><span class="s-num">Sessão ' + s.s + (s.cod ? ' · ' + s.cod : '') + '</span>' +
+      '<time datetime="'+s.data+'">' + fmtData(s.data) + '</time>' + tags + '</p>' +
+      '<h3>' + s.titulo + '</h3>' + (s.intro ? '<p class="s-intro">' + s.intro + '</p>' : '') + corpo +
+      (s.nota ? '<p class="s-nota">' + s.nota + '</p>' : '') + acoesSessao(s) + pasta + '</article>';
+  }
+
+  function filtra(r){
+    if (estado.l && !r.arquivos.some(function(a){ return a.lang === estado.l; })) return false;
+    if (estado.q && norm(semTags(r.texto) + ' ' + (r.alt ? semTags(r.alt) : '') + ' ' + r.curto).indexOf(norm(estado.q)) < 0) return false;
+    return true;
+  }
+
+  function desenha(){
+    var filtrando = !!(estado.q || estado.l), html = '', nRefs = 0, nSess = 0;
+    D.modulos.forEach(function(m){
+      var corpo = '';
+      m.sessoes.forEach(function(s){
+        var refs = s.refs.filter(filtra);
+        if (filtrando && !refs.length) return;
+        nRefs += refs.length; nSess++;
+        corpo += sessaoHTML(s, refs, false);
+      });
+      if (!corpo) return;
+      html += '<section class="modulo" id="m'+m.n+'"><div class="m-topo"><span class="m-num">' +
+        (m.n === 0 || m.n === 8 ? 'Sessão ' + (m.n === 0 ? 'de abertura' : 'final') : 'Módulo ' + m.n) + '</span><h2>' + m.nome + '</h2>' +
+        (m.autores ? '<p class="m-aut">' + m.autores + '</p>' : '') + '<p class="m-per">' + m.periodo + ' · ' +
+        m.sessoes.length + (m.sessoes.length > 1 ? ' sessões' : ' sessão') + '</p></div>' +
+        (m.nota && !filtrando ? '<p class="m-nota">' + m.nota + '</p>' : '') + corpo + (filtrando ? '' : fechoModulo(m)) + '</section>';
+    });
+    document.getElementById('modulos').innerHTML = html || '<p class="vazio">Nenhuma leitura encontrada. Tente outro nome de autor ou limpe o filtro de idioma.</p>';
+    document.getElementById('resultado').textContent = filtrando
+      ? nRefs + (nRefs === 1 ? ' leitura' : ' leituras') + ' em ' + nSess + (nSess === 1 ? ' sessão' : ' sessões')
+      : '';
+    var pc = document.getElementById('prox-corpo');
+    if (proxima){
+      var dias = Math.round((dataObj(proxima.data) - hoje) / 86400000);
+      document.getElementById('prox-tit').textContent = dias === 0 ? 'Próxima sessão · hoje' : 'Próxima sessão · em ' + dias + (dias === 1 ? ' dia' : ' dias');
+      pc.innerHTML = sessaoHTML(proxima, proxima.refs, true);
+    } else {
+      document.getElementById('prox-tit').textContent = 'Ciclo encerrado';
+      pc.innerHTML = '<p class="vazio">Todas as sessões do Ciclo I já foram realizadas.</p>';
+    }
+    document.querySelectorAll('.seg button').forEach(function(b){ b.setAttribute('aria-pressed', b.dataset.v === estado.v ? 'true' : 'false'); });
+  }
+
+  /* índice, legenda e chips */
+  var contagem = {}, total = 0;
+  todas.forEach(function(s){ s.refs.forEach(function(r){ r.arquivos.forEach(function(a){ contagem[a.lang] = (contagem[a.lang]||0) + 1; total++; }); }); });
+  document.getElementById('conta-textos').textContent = total + ' PDFs';
+  document.getElementById('leg-idiomas').innerHTML = ['pt','en','es'].map(function(l){
+    return '<li><span>' + idioma(l) + '</span><span>' + IDI[l].nome + ' · ' + (contagem[l]||0) + (contagem[l] === 1 ? ' arquivo' : ' arquivos') + '</span></li>';
+  }).join('');
+  document.getElementById('indice').innerHTML = D.modulos.map(function(m){
+    var atual = proxima && proxima.mod === m;
+    return '<a href="#m'+m.n+'"' + (atual ? ' class="atual"' : '') + '><span class="i-num">' + (m.n === 0 ? 'Abertura' : m.n === 8 ? 'Encerramento' : 'Módulo ' + m.n) + '</span>' +
+      '<span class="i-nome">' + m.nome + '</span><span class="i-per">' + m.periodo + ' · ' + m.sessoes.length + (m.sessoes.length > 1 ? ' sessões' : ' sessão') + '</span></a>';
+  }).join('');
+  var chips = document.getElementById('chips');
+  chips.innerHTML = '<button type="button" id="f-todos" data-l="" aria-pressed="true">Todos os idiomas</button>' +
+    ['pt','en','es'].map(function(l){ return '<button type="button" id="f-'+l+'" data-l="'+l+'" aria-pressed="false">' + bandeira(l) + IDI[l].nome + '</button>'; }).join('');
+  chips.addEventListener('click', function(e){
+    var b = e.target.closest('button'); if (!b) return;
+    estado.l = b.dataset.l;
+    chips.querySelectorAll('button').forEach(function(x){ x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+    desenha();
+  });
+  document.getElementById('q').addEventListener('input', function(e){ estado.q = e.target.value.trim(); desenha(); });
+  document.getElementById('bt-programa').href = urlBaixar(D.programa.id);
+  document.getElementById('bt-programa').lastChild.textContent = 'Programa completo (DOCX, ' + tam(D.programa.b) + ')';
+  document.getElementById('bt-raiz').href = urlPasta(D.raiz);
+
+  /* próximos prazos */
+  (function(){
+    var itens = [{d: DIAG.entrada.fecha, h: '18h', o: 'Diagnóstico de entrada', sub: 'Antes da sessão de abertura', b: botaoForm('diagnostico', '', 'Responder')}];
+    todas.forEach(function(s){
+      if (s.refs.length) itens.push({d: prazoFicha(s), h: '19h', o: 'Ficha de leitura · Sessão ' + s.s + (s.cod ? ' · ' + s.cod : ''), sub: s.titulo, b: botaoForm('ficha', opcaoSessao(s), 'Enviar ficha')});
+    });
+    itens.push({d: DIAG.saida.fecha, h: '19h', o: 'Diagnóstico de saída', sub: 'Antes da sessão final', b: botaoForm('diagnostico', '', 'Responder')});
+    var prox = itens.filter(function(i){ return i.d >= agora; }).sort(function(a, b){ return a.d - b.d; }).slice(0, 4);
+    document.getElementById('lista-prazos').innerHTML = prox.length ? prox.map(function(i){
+      return '<li><span class="quando">' + quando(i.d, i.h) + '</span><span class="oque">' + i.o + '<span>' + i.sub + '</span></span>' + i.b + '</li>';
+    }).join('') : '<li><span class="oque">Não há prazos pendentes.</span></li>';
+    var faltam = ['ficha', 'avaliacao', 'diagnostico'].some(function(k){ return !FORMS[k].url; });
+    document.getElementById('aviso-links').textContent = faltam ? 'Os botões tracejados ficam ativos quando os links dos formulários forem inseridos.' : '';
+  })();
+
+  desenha();
+})();
+</script>
+
+</body>
+</html>
